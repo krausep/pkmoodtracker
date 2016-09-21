@@ -1,2 +1,2 @@
 # pkmoodtracker
-Web application that tracks moods over time
+A web app that tracks moods and notes over time
