@@ -45,6 +45,28 @@ namespace moodtracker.Controllers
             return Json(moods, JsonRequestBehavior.AllowGet);
         }
 
+        public async Task<JsonResult> GetMoodScales()
+        {
+            _client = new MongoClient();
+            _database = _client.GetDatabase("moodtracker");
+            var collection = _database.GetCollection<BsonDocument>("moods");
+            var moods = new List<MoodItem>();
+            using (var cursor = await collection.FindAsync(new BsonDocument()))
+            {
+                while (await cursor.MoveNextAsync())
+                {
+                    var batch = cursor.Current;
+                    foreach (var document in batch)
+                    {
+                        moods.Add(BsonSerializer.Deserialize<MoodItem>(document));
+                    }
+                }
+            }
+
+            moods = moods.OrderByDescending(m => m.CreatedDate).ToList();
+            return Json(moods.Select(m => new { m.CreatedDate, m.Scale}), JsonRequestBehavior.AllowGet);
+        }
+
         [System.Web.Mvc.HttpPost]
         public async Task<JsonResult> AddMood([FromBody] MoodItem moodItem)
         {
