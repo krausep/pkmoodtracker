@@ -63,7 +63,8 @@ namespace moodtracker.Controllers
                 }
             }
 
-            moods = moods.OrderBy(m => m.CreatedDate).Take(30).ToList();
+
+            moods = moods.OrderBy(m => m.CreatedDate).Skip(Math.Max(0, moods.Count - 30)).ToList();
             return Json(moods.Select(m => new { m.CreatedDate, m.Scale}), JsonRequestBehavior.AllowGet);
         }
 
