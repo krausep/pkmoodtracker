@@ -31,25 +31,25 @@
         function drawChart() {
             var moodScales;
             $.get("/Mood/GetMoodScales")
-                .done(function(data) {
+                .done(function (data) {
                     moodScales = data;
                     console.log("Data Loaded: " + data);
                     var i = 0;
                     var myArray = new Array(['TimeThing', 'Moods']);
-                    moodScales.forEach(function(m) {
+                    moodScales.forEach(function (m) {
                         console.log('mood scale ' + m.Scale + ', Date ' + m.CreatedDate);
 
-                        
+
                         myArray.push([formatDate(m.CreatedDate), m.Scale]);
 
                     });
                     var data = google.visualization.arrayToDataTable(myArray);
 
                     var options = {
-                        hAxis : {
+                        hAxis: {
                             title: "Day"
                         },
-                        vAxis : {
+                        vAxis: {
                             title: "Moods",
                             viewWindow: {
                                 min: 0,
@@ -84,42 +84,36 @@
 <div id="curve_chart" style="width: 900px; height: 500px"></div>
 <div ng-app="MoodApp" class="container" ng-controller="MoodController">
     <br />
-    <form ng-submit="addMood()">
-        <div class="row">
-            <div class="form-group">
-                <div class="row">
-                    <label for="moodText">Mood:</label>
-                </div>
-                <div class="row">
-                    <input id="moodText" type="text" ng-model="newMood.mood" />
-                </div>
+    <form ng-submit="addMood()" class="form-horizontal">
+        <div class="row form-group">
+            <div class="row">
+                <label for="moodText">Mood:</label>
+            </div>
+            <div class="row">
+                <input id="moodText" type="text" ng-model="newMood.mood" class="form-control" />
             </div>
         </div>
-        <div class="row">
-            <div class="form-group">
-                <div class="row">
-                    <label for="notesText">Notes:</label>
-                </div>
-                <div class="row">
-                    <input id="notesText" type="text" ng-model="newMood.notes" />
-                </div>
+        <div class="row form-group">
+            <div class="row">
+                <label for="notesText">Notes:</label>
+            </div>
+            <div class="row">
+                <input id="notesText" type="text" ng-model="newMood.notes" class="form-control" />
             </div>
         </div>
-        <div class="row">
-            <div class="form-group">
-                <div class="row">
-                    <label for="scaleNumber">Scale of 1-10:</label>
-                </div>
-                <div class="row">
-                    <input id="scaleNumber" type="number" ng-model="newMood.scale" />
-                </div>
-                <div class="row">
-                    <input id="scaleRange" type="range" min="0" max="10" ng-model="newMood.scale" />
-                </div>
+        <div class="row form-group">
+            <div class="row">
+                <label for="scaleNumber">Scale of 1-10:</label>
+            </div>
+            <div class="row">
+                <input id="scaleNumber" type="number" ng-model="newMood.scale" class="form-control" />
+            </div>
+            <div class="row">
+                <input id="scaleRange" type="range" min="0" max="10" ng-model="newMood.scale" class="form-control" />
             </div>
         </div>
-        <div class="row">
-            <input type="submit" value="Submit" id="submit" />
+        <div class="row form-group">
+            <input type="submit" value="Submit" id="submit" class="btn-success"/>
         </div>
     </form>
     <br />
