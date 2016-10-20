@@ -57,6 +57,7 @@ MoodApp.controller('MoodController', function ($scope, MoodService) {
             .success(function (mood) {
                 $scope.newMood = null;
                 getMoods();
+                drawChart();
             })
             .error(function (error) {
                 $scope.status = 'Unable to add mood: ' + error.message;
@@ -70,6 +71,7 @@ MoodApp.controller('MoodController', function ($scope, MoodService) {
         MoodService.deleteMood(moodToDelete)
             .success(function(data) {
                 getMoods();
+                drawChart();
             })
             .error(function(error) {
                 console.log('Unable to delete mood: ' + error.message);

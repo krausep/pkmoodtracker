@@ -90,7 +90,7 @@
                 <label for="moodText">Mood:</label>
             </div>
             <div class="row">
-                <input id="moodText" type="text" ng-model="newMood.mood" class="form-control" />
+                <input id="moodText" type="text" placeholder="What's your mood?" ng-model="newMood.mood" class="form-control" />
             </div>
         </div>
         <div class="row form-group">
@@ -98,7 +98,7 @@
                 <label for="notesText">Notes:</label>
             </div>
             <div class="row">
-                <input id="notesText" type="text" ng-model="newMood.notes" class="form-control" />
+                <textarea id="notesText" type="text" placeholder="Notes..." ng-model="newMood.notes" class="form-control"></textarea>
             </div>
         </div>
         <div class="row form-group">
@@ -106,14 +106,14 @@
                 <label for="scaleNumber">Scale of 1-10:</label>
             </div>
             <div class="row">
-                <input id="scaleNumber" type="number" ng-model="newMood.scale" class="form-control" />
+                <input id="scaleNumber" type="number" placeholder="7" ng-model="newMood.scale" class="form-control" />
             </div>
             <div class="row">
                 <input id="scaleRange" type="range" min="0" max="10" ng-model="newMood.scale" class="form-control" />
             </div>
         </div>
         <div class="row form-group">
-            <input type="submit" value="Submit" id="submit" class="btn-success"/>
+            <input type="submit" value="Submit" id="submit" class="btn btn-success"/>
         </div>
     </form>
     <br />
