@@ -9,6 +9,7 @@ using moodtracker.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using WebGrease.Css.Extensions;
 
 namespace moodtracker.Controllers
 {
@@ -47,6 +48,44 @@ namespace moodtracker.Controllers
 
         public async Task<JsonResult> GetMoodScales()
         {
+            var moods = await GetAllEntries();
+
+
+            moods = moods.OrderBy(m => m.CreatedDate).Skip(Math.Max(0, moods.Count - 30)).ToList();
+            return Json(moods.Select(m => new { m.CreatedDate, m.Scale}), JsonRequestBehavior.AllowGet);
+        }
+
+
+        public async Task<JsonResult> GetMoodAveragesByDayOfWeek()
+        {
+            _client = new MongoClient();
+            _database = _client.GetDatabase("moodtracker");
+            var moods = await GetAllEntries();
+            var dictionary = new Dictionary<string, MoodAverage>();
+
+            moods = moods.OrderBy(m => m.CreatedDate.DayOfWeek).ToList();
+            foreach (var mood in moods)
+            {
+                if (!dictionary.ContainsKey(mood.CreatedDate.DayOfWeek.ToString()))
+                {
+                    dictionary.Add(mood.CreatedDate.DayOfWeek.ToString(), new MoodAverage { DayOfWeek = mood.CreatedDate.DayOfWeek, TotalScale = mood.Scale, Count = 1});
+                }
+                else
+                {
+                    var entry = dictionary[mood.CreatedDate.DayOfWeek.ToString()];
+                    entry.Count++;
+                    entry.TotalScale += mood.Scale;
+                }
+            }
+
+            dictionary.Keys.ForEach(dkey => dictionary[dkey].AverageScale = dictionary[dkey].TotalScale / dictionary[dkey].Count);
+
+            return Json(dictionary.Keys.Select(d => new {DayOfWeek = d, Average = dictionary[d].AverageScale}), JsonRequestBehavior.AllowGet);
+
+        }
+
+        private static async Task<List<MoodItem>> GetAllEntries()
+        {
             _client = new MongoClient();
             _database = _client.GetDatabase("moodtracker");
             var collection = _database.GetCollection<BsonDocument>("moods");
@@ -62,11 +101,9 @@ namespace moodtracker.Controllers
                     }
                 }
             }
-
-
-            moods = moods.OrderBy(m => m.CreatedDate).Skip(Math.Max(0, moods.Count - 30)).ToList();
-            return Json(moods.Select(m => new { m.CreatedDate, m.Scale}), JsonRequestBehavior.AllowGet);
+            return moods;
         }
+
 
         [System.Web.Mvc.HttpPost]
         public async Task<JsonResult> AddMood([FromBody] MoodItem moodItem)

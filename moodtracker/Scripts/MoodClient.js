@@ -31,6 +31,9 @@ MoodApp.factory('MoodService', ['$http', function ($http) {
                 console.log($scope.status);
             });
     }
+    MoodService.getMoodAverages = function() {
+        return $http.get('/Mood/GetMoodAveragesByDayOfWeek');
+    }
     return MoodService;
 
 }]);
@@ -38,6 +41,8 @@ MoodApp.factory('MoodService', ['$http', function ($http) {
 MoodApp.controller('MoodController', function ($scope, MoodService) {
 
     getMoods();
+    getMoodAverages();
+
     function getMoods() {
         MoodService.getMoods()
             .success(function (moods) {
@@ -47,6 +52,17 @@ MoodApp.controller('MoodController', function ($scope, MoodService) {
             .error(function (error) {
                 $scope.status = 'Unable to load mood data: ' + error.message;
                 console.log($scope.status);
+            });
+    }
+
+    function getMoodAverages() {
+        MoodService.getMoodAverages()
+            .success(function(moods) {
+                $scope.moodAverages = moods;
+                console.log($scope.moods);
+            })
+            .error(function(error) {
+                $scope.status = 'Unable to load mood average data: ' + error.message;
             });
     }
 

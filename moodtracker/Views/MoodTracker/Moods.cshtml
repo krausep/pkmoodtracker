@@ -123,24 +123,40 @@
     <div class="row">
         <table class="table table-striped table-bordered">
             <thead class="thead">
+            <tr>
+                <td class="col-md-2">Date</td>
+                <td>Mood</td>
+                <td>Notes</td>
+                <td class="col-md-2">Scale</td>
+                <td>Scale (num)</td>
+                <td>Delete</td>
+            </tr>
+            </thead>
+            <tbody class="table-hover">
+            <tr ng-repeat="r in moods | filter : searchMood">
+                <td>{{r.ModifiedDate.slice(6, -2) | date: 'EEE MMM dd, yyyy'}}</td>
+                <td>{{r.Mood}}</td>
+                <td>{{r.Notes}}</td>
+                <td><input type="range" min="0" max="10" value="{{r.Scale}}"/></td>'
+                <td>{{r.Scale}}</td>
+
+                <td><button class="fa fa-remove" aria-hidden="true" ng-click="deleteMood($index)"></button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <table class="table table-striped table-bordered">
+            <thead class="thead">
                 <tr>
-                    <td class="col-md-2">Date</td>
-                    <td>Mood</td>
-                    <td>Notes</td>
-                    <td class="col-md-2">Scale</td>
-                    <td>Scale (num)</td>
-                    <td>Delete</td>
+                    <td class="col-md-2">Day of Week</td>
+                    <td>Average Scale</td>
                 </tr>
             </thead>
             <tbody class="table-hover">
-                <tr ng-repeat="r in moods | filter : searchMood">
-                    <td>{{r.ModifiedDate.slice(6, -2) | date: 'EEE MMM dd, yyyy'}}</td>
-                    <td>{{r.Mood}}</td>
-                    <td>{{r.Notes}}</td>
-                    <td><input type="range" min="0" max="10" value="{{r.Scale}}" /></td>'
-                    <td>{{r.Scale}}</td>
-
-                    <td><button class="fa fa-remove" aria-hidden="true" ng-click="deleteMood($index)"></button></td>
+                <tr ng-repeat="r in moodAverages">
+                    <td>{{r.DayOfWeek}}</td>
+                    <td>{{r.Average}}</td>
                 </tr>
             </tbody>
         </table>
