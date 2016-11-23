@@ -40,6 +40,8 @@ MoodApp.factory('MoodService', ['$http', function ($http) {
 
 MoodApp.controller('MoodController', function ($scope, MoodService) {
 
+    $scope.maxNoteLength = 2000;
+
     getMoods();
     getMoodAverages();
 
@@ -97,5 +99,7 @@ MoodApp.controller('MoodController', function ($scope, MoodService) {
     $scope.dateOf = function (utcDateStr) {
         return new Date(utcDateStr);
     }
+
+    
 
 });

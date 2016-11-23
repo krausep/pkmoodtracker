@@ -98,7 +98,10 @@
                 <label for="notesText">Notes:</label>
             </div>
             <div class="row">
-                <textarea id="notesText" type="text" placeholder="Notes..." ng-model="newMood.notes" class="form-control"></textarea>
+                <textarea id="notesText" type="text" placeholder="Notes..." ng-model="newMood.notes" class="form-control" ng-maxlength="{{maxNoteLength}}"></textarea>
+                <div id="characters">
+                    <span>Characters left: {{maxNoteLength - newMood.notes.length}}</span>
+                </div>
             </div>
         </div>
         <div class="row form-group">
