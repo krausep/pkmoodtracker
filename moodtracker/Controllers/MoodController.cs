@@ -24,7 +24,7 @@ namespace moodtracker.Controllers
             return View("../MoodTracker/Moods");
         }
 
-        public async Task<JsonResult> GetMoods()
+        public async Task<JsonResult> GetMoods(int top = 30)
         {
             _client = new MongoClient();
             _database = _client.GetDatabase("moodtracker");
@@ -42,7 +42,7 @@ namespace moodtracker.Controllers
                 }
             }
 
-            moods = moods.OrderByDescending(m => m.CreatedDate).ToList();
+            moods = moods.OrderByDescending(m => m.CreatedDate).Take(top).ToList();
             return Json(moods, JsonRequestBehavior.AllowGet);
         }
 
